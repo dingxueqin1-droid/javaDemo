@@ -13,6 +13,4 @@ import java.util.List;
 */
 public interface AttrKeyService extends IService<AttrKey> {
 
-    //查询全部属性名称和属性值列表
-    List<AttrKeyVo> listAttrInfo();
 }
