@@ -1,0 +1,10 @@
+# Maven build output
+**/target/
+
+# IntelliJ IDEA local workspace files
+.idea/workspace.xml
+.idea/compiler.xml
+*.iws
+
+# Java compiler output outside Maven target directories
+*.class
