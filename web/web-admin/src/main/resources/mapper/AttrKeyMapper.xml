@@ -4,4 +4,28 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.lease.web.admin.mapper.AttrKeyMapper">
 
+    <resultMap id="AttrKeyVoMap" type="com.atguigu.lease.web.admin.vo.attr.AttrKeyVo">
+        <id column="key_id" property="id"/>
+        <result column="key_name" property="name"/>
+        <collection property="attrValueList" ofType="com.atguigu.lease.model.entity.AttrValue">
+            <id column="value_id" property="id"/>
+            <result column="value_name" property="name"/>
+            <result column="value_attr_key_id" property="attrKeyId"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectAttrInfoList" resultMap="AttrKeyVoMap">
+        SELECT
+            ak.id          AS key_id,
+            ak.name        AS key_name,
+            av.id          AS value_id,
+            av.name        AS value_name,
+            av.attr_key_id AS value_attr_key_id
+        FROM attr_key ak
+        LEFT JOIN attr_value av
+            ON av.attr_key_id = ak.id
+            AND av.is_deleted = 0
+        WHERE ak.is_deleted = 0
+        ORDER BY ak.id, av.id
+    </select>
 </mapper>
