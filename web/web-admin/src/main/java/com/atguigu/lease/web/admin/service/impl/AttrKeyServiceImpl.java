@@ -1,11 +1,16 @@
 package com.atguigu.lease.web.admin.service.impl;
 
 import com.atguigu.lease.model.entity.AttrKey;
+import com.atguigu.lease.model.entity.AttrValue;
 import com.atguigu.lease.web.admin.mapper.AttrKeyMapper;
 import com.atguigu.lease.web.admin.service.AttrKeyService;
+import com.atguigu.lease.web.admin.service.AttrValueService;
 import com.atguigu.lease.web.admin.vo.attr.AttrKeyVo;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,9 +23,21 @@ import java.util.List;
 public class AttrKeyServiceImpl extends ServiceImpl<AttrKeyMapper, AttrKey>
     implements AttrKeyService{
 
+    @Autowired
+    private AttrValueService attrValueService;
+
     @Override
     public List<AttrKeyVo> listAttrInfo() {
         return baseMapper.selectAttrInfoList();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void removeAttrKeyById(Long attrKeyId) {
+        attrValueService.remove(
+                new LambdaQueryWrapper<AttrValue>()
+                        .eq(AttrValue::getAttrKeyId, attrKeyId));
+        removeById(attrKeyId);
     }
 }
 

@@ -49,7 +49,7 @@ public class AttrController {
     @Operation(summary = "根据id删除属性名称")
     @DeleteMapping("key/deleteById")
     public Result removeAttrKeyById(@RequestParam Long attrKeyId) {
-        attrKeyService.removeById(attrKeyId);
+        attrKeyService.removeAttrKeyById(attrKeyId);
         return Result.ok();
     }
 

@@ -17,4 +17,9 @@ public interface AttrKeyService extends IService<AttrKey> {
      * 查询属性名称及其关联的属性值。
      */
     List<AttrKeyVo> listAttrInfo();
+
+    /**
+     * 删除属性名称及其关联的全部属性值。
+     */
+    void removeAttrKeyById(Long attrKeyId);
 }
