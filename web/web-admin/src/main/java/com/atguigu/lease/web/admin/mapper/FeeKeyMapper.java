@@ -14,6 +14,12 @@ import java.util.List;
 */
 public interface FeeKeyMapper extends BaseMapper<FeeKey> {
 
+    /**
+     * 查询杂费名称及其关联的杂费值。
+     *
+     * @return 杂费名称列表
+     */
+    List<FeeKeyVo> selectFeeKeyVoList();
 }
 
 

@@ -4,4 +4,39 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.lease.web.admin.mapper.FeeKeyMapper">
 
+    <resultMap id="feeKeyVoMap" type="com.atguigu.lease.web.admin.vo.fee.FeeKeyVo">
+        <id property="id" column="fee_key_id"/>
+        <result property="name" column="fee_key_name"/>
+        <result property="createTime" column="fee_key_create_time"/>
+        <result property="updateTime" column="fee_key_update_time"/>
+        <result property="isDeleted" column="fee_key_is_deleted"/>
+        <collection property="feeValueList" ofType="com.atguigu.lease.model.entity.FeeValue">
+            <id property="id" column="fee_value_id"/>
+            <result property="name" column="fee_value_name"/>
+            <result property="unit" column="fee_value_unit"/>
+            <result property="feeKeyId" column="fee_value_fee_key_id"/>
+            <result property="createTime" column="fee_value_create_time"/>
+            <result property="updateTime" column="fee_value_update_time"/>
+            <result property="isDeleted" column="fee_value_is_deleted"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectFeeKeyVoList" resultMap="feeKeyVoMap">
+        SELECT fk.id          AS fee_key_id,
+               fk.name        AS fee_key_name,
+               fk.create_time AS fee_key_create_time,
+               fk.update_time AS fee_key_update_time,
+               fk.is_deleted  AS fee_key_is_deleted,
+               fv.id          AS fee_value_id,
+               fv.name        AS fee_value_name,
+               fv.unit        AS fee_value_unit,
+               fv.fee_key_id  AS fee_value_fee_key_id,
+               fv.create_time AS fee_value_create_time,
+               fv.update_time AS fee_value_update_time,
+               fv.is_deleted  AS fee_value_is_deleted
+        FROM fee_key fk
+                 LEFT JOIN fee_value fv ON fk.id = fv.fee_key_id AND fv.is_deleted = 0
+        WHERE fk.is_deleted = 0
+        ORDER BY fk.id, fv.id
+    </select>
 </mapper>

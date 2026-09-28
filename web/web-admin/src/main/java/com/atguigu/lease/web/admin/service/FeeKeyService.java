@@ -13,4 +13,17 @@ import java.util.List;
 */
 public interface FeeKeyService extends IService<FeeKey> {
 
+    /**
+     * 查询全部杂费名称及其对应的杂费值。
+     *
+     * @return 按杂费名称分组后的杂费信息
+     */
+    List<FeeKeyVo> listFeeKeyVo();
+
+    /**
+     * 删除杂费名称及其关联的全部杂费值。
+     *
+     * @param feeKeyId 杂费名称 ID
+     */
+    void removeFeeKeyById(Long feeKeyId);
 }
