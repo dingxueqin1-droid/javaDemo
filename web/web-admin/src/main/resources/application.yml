@@ -1,6 +1,12 @@
 server:
   port: 8080
 
+lease:
+  jwt:
+    # 至少 32 字节随机数据的 Base64 编码；未配置时使用重启即失效的临时密钥。
+    secret: ${JWT_SECRET:}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:7200}
+
 spring:
   data:
     redis:

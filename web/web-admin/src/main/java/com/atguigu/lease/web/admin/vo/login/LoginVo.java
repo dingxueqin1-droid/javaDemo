@@ -2,6 +2,7 @@ package com.atguigu.lease.web.admin.vo.login;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Schema(description = "后台管理系统登录信息")
@@ -11,11 +12,14 @@ public class LoginVo {
     private String username;
 
     @Schema(description="密码")
+    @ToString.Exclude
     private String password;
 
     @Schema(description="验证码key")
+    @ToString.Exclude
     private String captchaKey;
 
     @Schema(description="验证码code")
+    @ToString.Exclude
     private String captchaCode;
 }
