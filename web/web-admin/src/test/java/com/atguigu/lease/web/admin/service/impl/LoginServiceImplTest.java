@@ -65,7 +65,7 @@ class LoginServiceImplTest {
         assertEquals(48, decoded.getHeight());
 
         ArgumentCaptor<String> code = ArgumentCaptor.forClass(String.class);
-        verify(valueOperations).set(eq(key), code.capture(), eq(Duration.ofSeconds(60)));
+        verify(valueOperations).set(eq(key), code.capture(), eq(Duration.ofMinutes(5)));
         assertTrue(code.getValue().matches("[0-9]{4}"));
     }
 
@@ -75,8 +75,8 @@ class LoginServiceImplTest {
         CaptchaVo second = loginService.getCaptcha();
 
         assertNotEquals(first.getKey(), second.getKey());
-        verify(valueOperations).set(eq(first.getKey()), anyString(), eq(Duration.ofSeconds(60)));
-        verify(valueOperations).set(eq(second.getKey()), anyString(), eq(Duration.ofSeconds(60)));
+        verify(valueOperations).set(eq(first.getKey()), anyString(), eq(Duration.ofMinutes(5)));
+        verify(valueOperations).set(eq(second.getKey()), anyString(), eq(Duration.ofMinutes(5)));
     }
 
     @Test

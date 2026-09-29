@@ -1,5 +1,11 @@
 package com.atguigu.lease.web.admin.util;
 
+import com.atguigu.lease.common.result.ResultCodeEnum;
+import com.atguigu.lease.web.admin.exception.LoginException;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -53,5 +59,32 @@ public class JwtUtil {
                 .setExpiration(Date.from(now.plusSeconds(expirationSeconds)))
                 .signWith(signingKey, SignatureAlgorithm.HS256)
                 .compact();
+    }
+
+    /**
+     * 校验签名、签发方和有效期，返回可信的用户信息。
+     */
+    public Claims parseToken(String token) {
+        try {
+            Jws<Claims> jwt = Jwts.parserBuilder()
+                    .setSigningKey(signingKey)
+                    .requireIssuer("lease-admin")
+                    .build()
+                    .parseClaimsJws(token);
+            Claims claims = jwt.getBody();
+            Long userId = claims.get("userId", Long.class);
+            if (!SignatureAlgorithm.HS256.getValue().equals(jwt.getHeader().getAlgorithm())
+                    || claims.getExpiration() == null
+                    || userId == null || userId <= 0
+                    || !userId.toString().equals(claims.getSubject())
+                    || !StringUtils.hasText(claims.get("username", String.class))) {
+                throw new LoginException(ResultCodeEnum.TOKEN_INVALID);
+            }
+            return claims;
+        } catch (ExpiredJwtException exception) {
+            throw new LoginException(ResultCodeEnum.TOKEN_EXPIRED);
+        } catch (JwtException | IllegalArgumentException exception) {
+            throw new LoginException(ResultCodeEnum.TOKEN_INVALID);
+        }
     }
 }

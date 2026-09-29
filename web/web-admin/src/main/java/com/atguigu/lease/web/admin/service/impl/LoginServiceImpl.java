@@ -28,7 +28,7 @@ import java.util.UUID;
 public class LoginServiceImpl implements LoginService {
 
     private static final String CAPTCHA_KEY_PREFIX = "admin:login:captcha:";
-    private static final Duration CAPTCHA_TTL = Duration.ofSeconds(60);
+    private static final Duration CAPTCHA_TTL = Duration.ofMinutes(5);
     // 原子地读取并删除验证码，避免同一验证码被并发请求重复使用。
     private static final DefaultRedisScript<String> CONSUME_CAPTCHA_SCRIPT = new DefaultRedisScript<>(
             "local code = redis.call('GET', KEYS[1]); "
